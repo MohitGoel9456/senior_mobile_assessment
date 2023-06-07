@@ -8,8 +8,8 @@ import {
   StyleSheet
 } from "react-native";
 
-import { fetchTransactions } from "./transaction-data";
-import { TransactionList } from "./transaction-list";
+import { fetchTransactions } from "../utils/transaction-data";
+import { TransactionList } from "../components/transaction-list";
 
 const App = () => {
   const [transactions, setTransactions] = React.useState([]);

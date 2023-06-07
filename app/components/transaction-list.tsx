@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, Text, View } from "react-native";
 
 import { TransactionListItem } from "./transaction-list-item";
-import { Transaction } from "./types";
+import { Transaction } from "../interface/types";
 
 export const TransactionList = ({
   transactions,

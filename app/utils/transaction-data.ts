@@ -1,4 +1,4 @@
-import { type Transaction, type GenerateTransaction } from "./types";
+import { type Transaction, type GenerateTransaction } from "../interface/types";
 
 let { transactions, balance } = generateTransactions(2499);
 
