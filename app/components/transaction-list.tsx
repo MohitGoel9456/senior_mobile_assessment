@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, ScrollView, Text, View } from "react-native";
+import { FlatList, Text, View, StyleSheet } from "react-native";
 
 import { TransactionListItem } from "./transaction-list-item";
 import { Transaction } from "../interface/types";
@@ -20,12 +20,7 @@ export const TransactionList = ({
   return (
     <View>
       <Text
-        style={{
-          width: "100%",
-          textAlign: "center",
-          fontSize: 20,
-          marginBottom: 10,
-        }}>
+        style={styles.title}>
         Transactions
       </Text>
       <FlatList
@@ -36,3 +31,12 @@ export const TransactionList = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    width: "100%",
+    textAlign: "center",
+    fontSize: 20,
+    marginBottom: 10,
+  }
+})

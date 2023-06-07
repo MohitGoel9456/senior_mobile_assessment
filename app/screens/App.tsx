@@ -10,10 +10,12 @@ import {
 
 import { fetchTransactions } from "../utils/transaction-data";
 import { TransactionList } from "../components/transaction-list";
+import { NativeModules } from 'react-native';
+const { BalanceModule } = NativeModules;
 
 const App = () => {
   const [transactions, setTransactions] = React.useState([]);
-  const [balance, setBalance] = React.useState([]);
+  const [balance, setBalance] = React.useState<Number>(0);
 
   const onUpdateJsPress = async () => {
     // TODO: Compute and set balance.
@@ -21,6 +23,17 @@ const App = () => {
     const newTransactions = await response.json();
     setTransactions(newTransactions.transactions);
     setBalance(newTransactions.balance);
+  }
+
+  const onUpdateNativePress = async () => {
+    const response = await fetchTransactions();
+    const newTransactions = await response.json();
+    setTransactions(newTransactions.transactions);
+    const callback = (balance: number) => {
+      setBalance(balance?.toFixed(2));
+    }
+    const transactionsCopy = [...newTransactions.transactions];
+    BalanceModule.calculateBalance(transactionsCopy, callback);
   }
 
   return (
@@ -38,10 +51,7 @@ const App = () => {
         />
         <Button
           title="Update (Native)"
-          onPress={() => {
-            // TODO: Compute balance via native module and set.
-            // TODO: Update transaction list.
-          }}
+          onPress={onUpdateNativePress}
         />
       </View>
       <TransactionList transactions={transactions} />
