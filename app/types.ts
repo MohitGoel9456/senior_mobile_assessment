@@ -3,3 +3,8 @@ export interface Transaction {
   type: "creditCard" | "debitCard" | "deposit" | "wire";
   amount: number;
 }
+
+export interface GenerateTransaction {
+  transactions: Transaction[],
+  balance: string
+}

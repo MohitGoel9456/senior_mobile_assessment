@@ -1,13 +1,14 @@
-import { type Transaction } from "./types";
+import { type Transaction, type GenerateTransaction } from "./types";
 
-let transactions = generateTransactions(2499);
+let { transactions, balance } = generateTransactions(2499);
 
 /**
  * Fetch the "current" user's transactions.
  */
 export async function fetchTransactions(): Promise<Response> {
   transactions = [...transactions, generateDebit(transactions.length, 20)];
-  const response = new Response(JSON.stringify(transactions), {
+  let res = { transactions: transactions, balance: balance }
+  const response = new Response(JSON.stringify(res), {
     status: 200,
     statusText: "OK",
   });
@@ -15,7 +16,7 @@ export async function fetchTransactions(): Promise<Response> {
   return Promise.resolve(response);
 }
 
-function generateTransactions(count: number): Transaction[] {
+function generateTransactions(count: number): GenerateTransaction {
   let balance = 0;
   let lastCreditAmount = balance;
 
@@ -28,7 +29,6 @@ function generateTransactions(count: number): Transaction[] {
     } else {
       transaction = generateDebit(i, lastCreditAmount / 10);
     }
-
     balance += transaction.amount;
     transactions = [...transactions, transaction];
   }
@@ -36,8 +36,7 @@ function generateTransactions(count: number): Transaction[] {
   // Top off account to keep balance roughly positive as new debits are
   // generated each time `fetchTransactions()` is called.
   transactions = [...transactions, generateCredit(transactions.length)];
-
-  return transactions;
+  return { transactions, balance: balance.toFixed(2) };
 }
 
 function generateCredit(id: number): Transaction {
